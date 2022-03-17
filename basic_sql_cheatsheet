@@ -1,0 +1,147 @@
+CREATE TABLE hello (
+	name VARCHAR(20),
+	age  INTEGER,
+};
+
+
+ALTER TABLE hello (
+ADD location VARCHAR;
+
+DROP TABLE hello;  #remove table completely
+
+TRUNCATE TABLE hello; #remove all records 
+
+SELECT * FROM hello;
+
+SELECT name FROM hello;
+
+SELECT name FROM hello 
+WHERE  name = "3";
+
+INSERT INTO hello (name, age, location)
+VALUES ("John",50, "Torrance, CA");
+
+UPDATE hello
+SET name = "Bob" 
+WHERE age > 50;
+
+DELETE FROM hello    #Filtered TRUNCATE
+WHERE age <50;    
+
+SELECT AVG(age)
+FROM hello;
+
+SELECT SUM(age)
+FROM hello;
+
+SELECT ROUND(age, 5)
+FROM hello;
+
+SELECT MAX/MIN/COUNT(age)
+FROM hello;
+
+SELECT age AS 'Age'
+FROM hello;
+
+SELECT * 
+FROM hello
+WHERE age BETWEEN 20 and 50; OR NOT BETWEEN
+ 
+# GROUP BY is used for COUNT, MAX, MIN, SUM, AVG
+# The aim is to group a column mathematically into an ORDER
+
+SELECT name, COUNT(name)
+FROM hello
+GROUP BY name;
+
+# HAVING used to replace WHERE for COUNT, MM, SUM, AVG
+# Used usually with GROUP BY
+
+SELECT age, COUNT(*)
+FROM hello
+GROUP BY age
+HAVING COUNT(*) > 1;
+
+SELECT *
+FROM hello ORDER BY age; DESC if you want descending
+
+SELECT name
+from hello
+WHERE age IS NULL; or IS NOT NULL;
+
+#LIKE is used along with WHERE
+SELECT name
+FROM hello
+WHERE name LIKE  "%a%" OR name LIKE "%b%";
+
+
+SELECT *
+FROM hello
+LIMIT 5;
+
+SELECT DISTINCT name
+FROM hello;
+
+SELECT name, age
+FROM hello
+LEFT JOIN hello1
+ON hello.name = hello1.name;
+
+CREATE VIEW high_Age AS SELECT * from hello
+WHERE age >50;
+
+ALTER TABLE hello ADD address VARCHAR(80);
+
+# Swap data in COLUMNS
+
+UPDATE hello SET age = location, location = age;
+
+sp_RENAME hello hello2
+
+BACKUP DATABASE hello
+TO DISK = "bla.db";
+
+# Backup only latest DB
+BACKUP DATABASE hello
+TO DISK = "**.bak"
+WITH DIFFERENTIAL;
+
+RESTORE DATABASE hello
+TO DISK = "&&.bak"
+
+# Run like a FUNCTION
+CREATE PROCEDURE highage
+AS SELECT * FROm hello GO;
+
+SELECT name, age
+CASE
+WHEN age< 10 then "young"
+WHEN age> 50 THEN "elderly"
+ELSE "adult"
+END AS "Age Group"
+FROM hello 
+
+# Replace NULL VALUE
+SELECT name, IFNULL(age, 10) AS "Age"
+FROM hello;
+
+# Are there NULL VALUES?
+SELECT COALESCE(name, age) AS "COALESCE example"
+
+SELECT CONCAT ("hi","there")
+
+# REPLACE chars regex matching, REPLACE all b with c
+SELECT TRANSLATE(name, 'b','c') from hello
+
+# CONVERT data type
+SELECT CAST("value" as varchar(50)); 
+
+SELECT ISNUMERIC(1); returns 1 if NUMERIC
+
+# find string of one col in another
+SELECT INSTR(name, email)
+AS matchname FROM hello;
+
+# remove whitespace
+SELECT TRIM(name)
+as "trimmed" FROM hello;
